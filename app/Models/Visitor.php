@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Visitor extends Model
 {
     protected $primaryKey = 'id_visitor';
+
     public $timestamps = false;
 
     protected $fillable = [
