@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: ['main', 'dev', 'feature/**']
+  pull_request:
+    branches: ['main', 'dev']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - run: composer install --no-progress --no-interaction
+      - run: cp .env.example .env
+      - run: php artisan key:generate
+      - run: php artisan migrate --seed
+      - run: php artisan test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - run: composer install --no-progress --no-interaction
+      - run: vendor/bin/pint --test
